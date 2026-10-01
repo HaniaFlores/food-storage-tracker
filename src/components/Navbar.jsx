@@ -23,6 +23,10 @@ function Navbar() {
             Inventory
           </NavLink>
 
+          <NavLink to="/categories" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            Categories
+          </NavLink>
+
           <NavLink to="/profile" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
             Profile
           </NavLink>

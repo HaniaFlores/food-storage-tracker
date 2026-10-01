@@ -10,6 +10,7 @@ import {
 
 import {
   getFoodStatus,
+  formatFoodDate,
 } from '../utils/dateUtils';
 
 function formatDate(dateString) {
@@ -153,7 +154,7 @@ function InventoryTable({
                 );
 
               return (
-                <tr key={item.id}>
+                <tr key={item._id}>
 
                   <td>
 
@@ -186,7 +187,7 @@ function InventoryTable({
                   </td>
 
                   <td>
-                    {formatDate(
+                    {formatFoodDate(
                       item.expirationDate
                     )}
                   </td>
@@ -224,7 +225,7 @@ function InventoryTable({
                         type="button"
                         onClick={() =>
                           onRemove(
-                            item.id
+                            item._id
                           )
                         }
                       >

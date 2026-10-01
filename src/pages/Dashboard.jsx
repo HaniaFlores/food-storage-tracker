@@ -11,20 +11,8 @@ import SummaryCard from '../components/SummaryCard';
 
 import {
   getFoodStatus,
+  formatFoodDate,
 } from '../utils/dateUtils';
-
-function formatDate(dateString) {
-  return new Date(
-    `${dateString}T00:00:00`
-  ).toLocaleDateString(
-    'en-US',
-    {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    }
-  );
-}
 
 function Dashboard({ items }) {
   const navigate = useNavigate();
@@ -188,7 +176,7 @@ function Dashboard({ items }) {
                   </div>
 
                   <span className="alert-date">
-                    {formatDate(
+                    {formatFoodDate(
                       item.expirationDate
                     )}
                   </span>

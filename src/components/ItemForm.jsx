@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
+import {
+  toDateInputValue,
+} from '../utils/dateUtils';
 
 const emptyForm = {
   name: '',
@@ -21,7 +24,7 @@ function ItemForm({
         name: itemToEdit.name,
         quantity: itemToEdit.quantity,
         category: itemToEdit.category,
-        expirationDate: itemToEdit.expirationDate,
+        expirationDate: toDateInputValue(itemToEdit.expirationDate),
       });
     } else {
       setFormData(emptyForm);

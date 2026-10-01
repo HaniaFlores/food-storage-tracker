@@ -56,25 +56,51 @@ function Inventory({
     automatically open the Add Item form.
   */
   useEffect(() => {
-    const shouldOpenAddForm =
-      searchParams.get('add');
+  const shouldOpenAddForm =
+    searchParams.get(
+      'add'
+    );
 
-    if (shouldOpenAddForm === 'true') {
-      setItemToEdit(null);
-      setShowForm(true);
+  const requestedCategory =
+    searchParams.get(
+      'category'
+    );
 
-      /*
-        Remove ?add=true after opening
-        so refreshing does not reopen it.
-      */
-      setSearchParams(
-        {},
-        { replace: true }
+  if (
+    requestedCategory
+  ) {
+    setCategory(
+      requestedCategory
+    );
+  }
+
+  if (
+    shouldOpenAddForm ===
+    'true'
+  ) {
+    setItemToEdit(null);
+
+    setShowForm(true);
+
+    const nextParams =
+      new URLSearchParams(
+        searchParams
       );
-    }
-  }, [
-    searchParams,
-    setSearchParams,
+
+    nextParams.delete(
+      'add'
+    );
+
+    setSearchParams(
+      nextParams,
+      {
+        replace: true,
+      }
+    );
+  }
+}, [
+  searchParams,
+  setSearchParams,
   ]);
 
   const categories = [
@@ -173,18 +199,31 @@ function Inventory({
     setShowForm(true);
   }
 
-  function handleSave(formData) {
-    if (itemToEdit) {
-      onEditItem({
-        ...formData,
-        id: itemToEdit.id,
-      });
-    } else {
-      onAddItem(formData);
-    }
+  async function handleSave(
+    formData
+  ) {
+    try {
+      if (itemToEdit) {
+        await onEditItem({
+          ...formData,
+          _id:
+            itemToEdit._id,
+        });
+      } else {
+        await onAddItem(
+          formData
+        );
+      }
 
-    setShowForm(false);
-    setItemToEdit(null);
+      setShowForm(false);
+
+      setItemToEdit(null);
+    } catch (error) {
+      alert(
+        error.message ||
+        'Could not save item.'
+      );
+    }
   }
 
   function handleCancel() {
@@ -192,22 +231,34 @@ function Inventory({
     setItemToEdit(null);
   }
 
-  function handleRemove(id) {
-    const item =
-      items.find(
-        (item) => item.id === id
-      );
+  async function handleRemove(
+  id
+) {
+  const item =
+    items.find(
+      (item) =>
+        item._id === id
+    );
 
-    const confirmed =
-      window.confirm(
-        `Remove ${
-          item?.name ||
-          'this item'
-        } from your inventory?`
-      );
+  const confirmed =
+    window.confirm(
+      `Remove ${
+        item?.name ||
+        'this item'
+      } from your inventory?`
+    );
 
-    if (confirmed) {
-      onRemoveItem(id);
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await onRemoveItem(id);
+    } catch (error) {
+      alert(
+        error.message ||
+        'Could not remove item.'
+      );
     }
   }
 
