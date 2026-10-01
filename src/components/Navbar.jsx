@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Leaf, Search, User } from 'lucide-react';
+import { Leaf, User } from 'lucide-react';
 
 function Navbar() {
   return (
@@ -33,13 +33,14 @@ function Navbar() {
         </nav>
 
         <div className="navbar-actions">
-          <button className="icon-button" type="button">
-            <Search size={18} />
-          </button>
-
-          <div className="user-badge">
+          <NavLink
+            to="/profile"
+            className="user-badge"
+            aria-label="Profile"
+            title="Profile"
+          >
             <User size={18} />
-          </div>
+          </NavLink>
         </div>
       </div>
     </header>
